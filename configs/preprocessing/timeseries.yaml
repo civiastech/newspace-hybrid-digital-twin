@@ -1,0 +1,12 @@
+sensor_validation:
+  required_columns:
+    - timestamp
+  timestamp_column: timestamp
+  duplicate_subset:
+    - sensor_id
+    - timestamp
+  missing_threshold: 0.25
+sensor_preprocessing:
+  sensor_id_column: sensor_id
+  resample_rule: 1h
+  aggregate_method: mean

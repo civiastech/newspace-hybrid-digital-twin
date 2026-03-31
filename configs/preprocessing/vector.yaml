@@ -1,0 +1,3 @@
+vector_validation:
+  allow_repair: true
+  require_non_empty: true

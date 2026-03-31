@@ -1,0 +1,4 @@
+validation:
+  max_allowed_jump: 0.5
+paths:
+  output_dir: data/reports/validation_runtime

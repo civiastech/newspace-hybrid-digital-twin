@@ -1,0 +1,22 @@
+{
+  "hardening_version": "v2",
+  "added_files": [
+    "requirements.txt",
+    "requirements-dev.txt",
+    ".dockerignore",
+    ".github/workflows/ci.yml",
+    "scripts/bootstrap_env.sh",
+    "scripts/quality_gate.sh",
+    "scripts/run_e2e_smoke.py",
+    "docs/production_hardening.md"
+  ],
+  "updated_files": [
+    "README.md",
+    "Makefile"
+  ],
+  "cleanup": [
+    "removed __pycache__ directories",
+    "removed .pytest_cache",
+    "removed *.pyc files"
+  ]
+}

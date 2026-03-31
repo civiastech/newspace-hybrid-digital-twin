@@ -1,0 +1,11 @@
+features:
+  optical:
+    indices: ["NDVI", "NBR", "NDWI"]
+    include_bands: ["B02", "B03", "B04", "B08", "B11", "B12"]
+    band_map:
+      B02: 1
+      B03: 2
+      B04: 3
+      B08: 4
+      B11: 5
+      B12: 6

@@ -1,0 +1,6 @@
+model_name: simple_unet
+in_channels: 3
+classes: 1
+loss: bce_dice
+threshold: 0.5
+image_size: 32

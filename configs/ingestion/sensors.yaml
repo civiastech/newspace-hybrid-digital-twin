@@ -1,0 +1,9 @@
+modality: sensors
+relative_raw_dir: data/raw/sensors/{aoi_id}
+file_globs:
+  - "*.csv"
+required_columns:
+  - timestamp
+timestamp_column: timestamp
+sensor_id_column: sensor_id
+timezone: Europe/Lisbon

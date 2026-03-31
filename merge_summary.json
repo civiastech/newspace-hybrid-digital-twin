@@ -1,0 +1,23 @@
+{
+  "base": "newspace_hybrid_digital_twin_deliverable2C",
+  "merged_deliverables": [
+    "1A",
+    "1B",
+    "1C",
+    "1D",
+    "2A",
+    "2B",
+    "2C",
+    "2D",
+    "3A",
+    "3B",
+    "3C",
+    "3D"
+  ],
+  "removed_non_source_artifacts": [
+    ".pytest_cache",
+    "__pycache__",
+    "*.pyc"
+  ],
+  "output_repo": "/mnt/data/newspace_master_repo"
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "unit_id": "cell_001",
+    "n_states": 2,
+    "first_timestamp": "2026-03-28T10:00:00",
+    "last_timestamp": "2026-03-30T10:00:00",
+    "first_risk_score": 0.34900000000000003,
+    "last_risk_score": 0.5838946674948527,
+    "risk_delta": 0.23489466749485272,
+    "max_risk_score": 0.5838946674948527,
+    "mean_risk_score": 0.4664473337474264
+  },
+  {
+    "unit_id": "cell_002",
+    "n_states": 1,
+    "first_timestamp": "2026-03-30T10:00:00",
+    "last_timestamp": "2026-03-30T10:00:00",
+    "first_risk_score": 0.42,
+    "last_risk_score": 0.42,
+    "risk_delta": 0.0,
+    "max_risk_score": 0.42,
+    "mean_risk_score": 0.42
+  }
+]

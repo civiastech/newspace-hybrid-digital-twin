@@ -1,0 +1,5 @@
+model_name: simple_cnn
+in_channels: 3
+num_classes: 3
+loss: cross_entropy
+image_size: 32

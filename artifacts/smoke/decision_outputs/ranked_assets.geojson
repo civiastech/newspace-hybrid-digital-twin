@@ -1,0 +1,59 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.0,
+          1.0
+        ]
+      },
+      "properties": {
+        "unit_id": "cell_002",
+        "timestamp": "2026-03-30T10:00:00",
+        "risk_score": 0.42,
+        "priority_rank": 2,
+        "fused_condition_score": 0.45,
+        "severity_class": "medium",
+        "recommended_action": "scheduled_monitoring",
+        "uncertainty_score": 0.12,
+        "consistency_score": 0.88,
+        "global_rank": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.0,
+          0.0
+        ]
+      },
+      "properties": {
+        "unit_id": "cell_001",
+        "timestamp": "2026-03-30T10:00:00",
+        "fused_condition_score": 0.7387548806138804,
+        "severity_class": "high",
+        "anomaly_score": 0.74,
+        "uncertainty_score": 0.14326918328582383,
+        "consistency_score": 0.9203540627426696,
+        "risk_score": 0.5838946674948527,
+        "priority_rank": 3,
+        "recommended_action": "targeted_monitoring",
+        "previous_state_id": "cell_001__20260328T100000",
+        "state_metadata": {
+          "scenario": "smoke_current",
+          "delta_risk_score": 0.23489466749485272,
+          "delta_condition_score": 0.2587548806138804,
+          "delta_anomaly_score": 0.43,
+          "risk_level": "medium",
+          "state_id": "cell_001__20260330T100000"
+        },
+        "global_rank": 2
+      }
+    }
+  ]
+}

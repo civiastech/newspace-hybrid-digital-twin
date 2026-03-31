@@ -1,0 +1,11 @@
+segmentation:
+  classes:
+    0: background
+    1: burned_area
+severity:
+  classes:
+    0: low
+    1: medium
+    2: high
+anomaly:
+  target: anomaly_score

@@ -1,0 +1,6 @@
+fusion:
+  optical_weight: 0.4
+  sar_weight: 0.3
+  anomaly_weight: 0.2
+  context_weight: 0.1
+  recency_decay: 0.95

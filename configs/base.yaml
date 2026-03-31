@@ -1,0 +1,38 @@
+project:
+  name: newspace_hybrid_digital_twin
+  run_name: deliverable_1d
+paths:
+  project_root: .
+  data_raw: data/raw
+  data_interim: data/interim
+  data_processed: data/processed
+  data_manifests: data/manifests
+  data_features: data/features
+  data_predictions: data/predictions
+  data_twin: data/twin
+  reports: data/reports
+  qc: data/qc
+database:
+  host: localhost
+  port: 5432
+  dbname: newspace
+  user: postgres
+  password: postgres
+logging:
+  level: INFO
+  log_dir: data/reports/logs
+runtime:
+  random_seed: 42
+  target_crs: 3763
+  timezone: Europe/Lisbon
+active_aoi: wildfire_case_aoi
+active_experiment: wildfire_baseline_v1
+ingestion_configs:
+  sentinel1: configs/ingestion/sentinel1.yaml
+  sentinel2: configs/ingestion/sentinel2.yaml
+  uav: configs/ingestion/uav.yaml
+  sensors: configs/ingestion/sensors.yaml
+  vectors: configs/ingestion/vectors.yaml
+validation_configs:
+  sensors: configs/preprocessing/timeseries.yaml
+  vectors: configs/preprocessing/vector.yaml

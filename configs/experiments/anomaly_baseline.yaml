@@ -1,0 +1,6 @@
+task: anomaly
+manifest: data/features/wildfire_case_aoi/anomaly_features.csv
+train_config: configs/models/train_common.yaml
+model_config: configs/models/anomaly.yaml
+tracking_config: configs/experiments/tracking.yaml
+output_dir: data/reports/checkpoints

@@ -1,0 +1,7 @@
+modality: vectors
+relative_raw_dir: data/raw/vectors/{aoi_id}
+file_globs:
+  - "*.geojson"
+  - "*.gpkg"
+  - "*.shp"
+crs_required: true

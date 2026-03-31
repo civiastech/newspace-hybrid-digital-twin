@@ -1,0 +1,15 @@
+aoi_id: wildfire_case_aoi
+name: portugal_wildfire_validation_case
+case_study_type: wildfire_monitoring
+target_crs: 3763
+time_start: "2024-06-01T00:00:00"
+time_end: "2025-12-31T23:59:59"
+geometry_file: "data/raw/aoi/wildfire_case_aoi.geojson"
+modalities:
+  sentinel1: true
+  sentinel2: true
+  uav: true
+  sensors: true
+  vectors: true
+grid:
+  cell_size_m: 100

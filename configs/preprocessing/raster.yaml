@@ -1,0 +1,7 @@
+raster:
+  clip_to_aoi: true
+  reproject: true
+  target_crs: 3763
+  resampling: bilinear
+  tile_size: 256
+  nodata_policy: preserve

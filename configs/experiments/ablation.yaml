@@ -1,0 +1,9 @@
+factor: modality
+metric_map:
+  segmentation: dice
+  severity: macro_f1
+  anomaly: mean_reconstruction_error
+maximize:
+  segmentation: true
+  severity: true
+  anomaly: false

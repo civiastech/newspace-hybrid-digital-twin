@@ -1,0 +1,5 @@
+features:
+  temporal:
+    rolling_windows_days: [7, 30]
+    derive_change: true
+    derive_anomaly_proxy: true

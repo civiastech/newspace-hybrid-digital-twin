@@ -1,0 +1,6 @@
+service:
+  host: 0.0.0.0
+  port: 8000
+  reload: false
+paths:
+  output_dir: data/api_outputs

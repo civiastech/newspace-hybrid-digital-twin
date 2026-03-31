@@ -1,0 +1,6 @@
+task: segmentation
+manifest: data/manifests/wildfire_case_aoi/dataset_manifest.csv
+train_config: configs/models/train_common.yaml
+model_config: configs/models/segmentation.yaml
+tracking_config: configs/experiments/tracking.yaml
+output_dir: data/reports/checkpoints

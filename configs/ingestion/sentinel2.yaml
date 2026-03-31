@@ -1,0 +1,7 @@
+modality: sentinel2
+relative_raw_dir: data/raw/sentinel2/{aoi_id}
+file_globs:
+  - "*.tif"
+  - "*.tiff"
+  - "*.jp2"
+crs_required: true

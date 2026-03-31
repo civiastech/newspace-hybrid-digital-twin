@@ -1,0 +1,3 @@
+features:
+  terrain:
+    include: ["elevation", "slope", "aspect"]

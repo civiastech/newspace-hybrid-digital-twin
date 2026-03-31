@@ -1,0 +1,6 @@
+selection_metric_map:
+  segmentation: dice
+  severity: macro_f1
+  anomaly: mean_reconstruction_error
+calibration:
+  bins: 10

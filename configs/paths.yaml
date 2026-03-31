@@ -1,0 +1,11 @@
+paths:
+  project_root: "."
+  data_raw: "data/raw"
+  data_interim: "data/interim"
+  data_processed: "data/processed"
+  data_manifests: "data/manifests"
+  data_features: "data/features"
+  data_predictions: "data/predictions"
+  data_twin: "data/twin"
+  reports: "data/reports"
+  qc: "data/qc"

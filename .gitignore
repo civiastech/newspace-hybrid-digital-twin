@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.pyc
+.env
+data/raw/
+data/interim/
+data/processed/
+data/manifests/
+data/features/
+data/predictions/
+data/twin/
+data/qc/
+data/reports/
+mlruns/

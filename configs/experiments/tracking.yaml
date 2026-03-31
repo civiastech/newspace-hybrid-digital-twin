@@ -1,0 +1,11 @@
+tracking:
+  backend: local_jsonl   # local_jsonl | mlflow | wandb
+  experiment_name: wildfire_phase2
+  run_name_prefix: baseline
+  artifact_dir: data/reports/experiments/artifacts
+  registry_path: data/reports/experiments/experiment_registry.jsonl
+  enable_mlflow: false
+  mlflow_tracking_uri: null
+  enable_wandb: false
+  wandb_project: newspace-hybrid-digital-twin
+  wandb_entity: null

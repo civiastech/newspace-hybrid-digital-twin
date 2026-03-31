@@ -1,0 +1,5 @@
+features:
+  sar:
+    channels: ["VV", "VH"]
+    derive_ratios: true
+    derive_change: true

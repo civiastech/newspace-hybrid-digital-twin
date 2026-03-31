@@ -1,0 +1,4 @@
+tiling:
+  grid_cell_size_m: 100
+  raster_tile_size_px: 256
+  overlap_px: 0

@@ -1,0 +1,3 @@
+unit_id,risk_score,priority_rank,fused_condition_score,severity_class,recommended_action,geometry,global_rank
+cell_001,0.88,1,0.82,high,immediate_field_review,"{'type': 'Point', 'coordinates': [0.0, 0.0]}",1
+cell_002,0.55,3,0.51,medium,scheduled_monitoring,"{'type': 'Point', 'coordinates': [1.0, 1.0]}",2

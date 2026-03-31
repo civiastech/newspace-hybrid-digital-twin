@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: newspace_postgis
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: newspace_twin
+      POSTGRES_USER: newspace
+      POSTGRES_PASSWORD: newspace
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ../db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+
+volumes:
+  pg_data:

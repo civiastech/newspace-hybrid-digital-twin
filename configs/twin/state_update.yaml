@@ -1,0 +1,9 @@
+twin:
+  severity_thresholds:
+    low: 0.3
+    medium: 0.6
+  risk_weights:
+    condition: 0.5
+    anomaly: 0.2
+    uncertainty: 0.1
+    context: 0.2
