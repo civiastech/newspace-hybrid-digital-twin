@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 import geopandas as gpd
+import numpy as np
 import rasterio
 from rasterio.mask import mask
 from rasterio.warp import Resampling, calculate_default_transform, reproject
@@ -22,9 +23,9 @@ class RasterPreprocessResult:
 
 
 _RESAMPLING_MAP: dict[str, Resampling] = {
-    'nearest': Resampling.nearest,
-    'bilinear': Resampling.bilinear,
-    'cubic': Resampling.cubic,
+    "nearest": Resampling.nearest,
+    "bilinear": Resampling.bilinear,
+    "cubic": Resampling.cubic,
 }
 
 
@@ -38,7 +39,7 @@ def _load_aoi_shapes(aoi_path: str | Path | None, target_epsg: int) -> list[dict
     if gdf.empty:
         return None
     if gdf.crs is None:
-        raise ValueError(f'AOI file has no CRS: {path}')
+        raise ValueError(f"AOI file has no CRS: {path}")
     if gdf.crs.to_epsg() != target_epsg:
         gdf = gdf.to_crs(epsg=target_epsg)
     return [geom.__geo_interface__ for geom in gdf.geometry if geom is not None]
@@ -51,15 +52,44 @@ def preprocess_raster(
     target_epsg: int,
     aoi_path: str | Path | None,
     clip_to_aoi: bool,
-    resampling: str = 'bilinear',
+    resampling: str = "bilinear",
 ) -> RasterPreprocessResult:
     src_path = Path(source_path)
     dst_path = Path(output_path)
     dst_path.parent.mkdir(parents=True, exist_ok=True)
 
+    suffix = src_path.suffix.lower()
+
+    # Synthetic NPZ support
+    if suffix == ".npz":
+        data = np.load(src_path)
+        arrays = {k: data[k] for k in data.files}
+        np.savez_compressed(dst_path, **arrays)
+
+        first_key = list(data.files)[0]
+        arr = data[first_key]
+
+        if arr.ndim == 2:
+            height, width = arr.shape
+        elif arr.ndim >= 3:
+            height, width = arr.shape[-2], arr.shape[-1]
+        else:
+            height = 1
+            width = int(arr.shape[0]) if arr.ndim == 1 else 1
+
+        return RasterPreprocessResult(
+            source_uri=str(src_path),
+            output_uri=str(dst_path),
+            crs_epsg=4326,
+            width=width,
+            height=height,
+            was_clipped=False,
+            was_reprojected=False,
+        )
+
     with rasterio.open(src_path) as src:
         source_epsg = src.crs.to_epsg() if src.crs is not None else None
-        target_crs = f'EPSG:{target_epsg}'
+        target_crs = f"EPSG:{target_epsg}"
         was_reprojected = source_epsg != target_epsg
         resampling_enum = _RESAMPLING_MAP.get(resampling, Resampling.bilinear)
 
@@ -72,9 +102,9 @@ def preprocess_raster(
                 *src.bounds,
             )
             meta = src.meta.copy()
-            meta.update({'crs': target_crs, 'transform': transform, 'width': width, 'height': height})
-            temp_path = dst_path.with_suffix('.tmp.tif')
-            with rasterio.open(temp_path, 'w', **meta) as dst:
+            meta.update({"crs": target_crs, "transform": transform, "width": width, "height": height})
+            temp_path = dst_path.with_suffix(".tmp.tif")
+            with rasterio.open(temp_path, "w", **meta) as dst:
                 for band in range(1, src.count + 1):
                     reproject(
                         source=rasterio.band(src, band),
@@ -91,18 +121,19 @@ def preprocess_raster(
 
     was_clipped = False
     shapes = _load_aoi_shapes(aoi_path, target_epsg) if clip_to_aoi else None
+
     with rasterio.open(working_path) as work_src:
         if shapes:
             clipped_data, clipped_transform = mask(work_src, shapes=shapes, crop=True)
             meta = work_src.meta.copy()
             meta.update(
                 {
-                    'height': clipped_data.shape[1],
-                    'width': clipped_data.shape[2],
-                    'transform': clipped_transform,
+                    "height": clipped_data.shape[1],
+                    "width": clipped_data.shape[2],
+                    "transform": clipped_transform,
                 }
             )
-            with rasterio.open(dst_path, 'w', **meta) as dst:
+            with rasterio.open(dst_path, "w", **meta) as dst:
                 dst.write(clipped_data)
             was_clipped = True
         else:
@@ -113,7 +144,7 @@ def preprocess_raster(
         height = work_src.height if not was_clipped else clipped_data.shape[1]
         crs_epsg = work_src.crs.to_epsg() if work_src.crs is not None else target_epsg
 
-    temp_path = dst_path.with_suffix('.tmp.tif')
+    temp_path = dst_path.with_suffix(".tmp.tif")
     if temp_path.exists():
         temp_path.unlink()
 
