@@ -1,0 +1,94 @@
+Metadata-Version: 2.4
+Name: newspace-hybrid-digital-twin
+Version: 0.3.0
+Summary: Integrated hybrid multi-sensor digital twin framework with fusion, twin state, API, and validation runtime modules.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic>=2.6
+Requires-Dist: PyYAML>=6.0
+Requires-Dist: python-dotenv>=1.0
+Requires-Dist: loguru>=0.7
+Requires-Dist: typer>=0.12
+Requires-Dist: rich>=13.7
+Requires-Dist: pandas>=2.2
+Requires-Dist: numpy>=1.26
+Requires-Dist: geopandas>=0.14
+Requires-Dist: shapely>=2.0
+Requires-Dist: pyproj>=3.6
+Requires-Dist: rasterio>=1.3
+Requires-Dist: sqlalchemy>=2.0
+Requires-Dist: psycopg[binary]>=3.1
+Requires-Dist: torch>=2.2
+Requires-Dist: torchvision>=0.17
+Requires-Dist: scikit-learn>=1.4
+Requires-Dist: matplotlib>=3.8
+Requires-Dist: fastapi>=0.111
+Requires-Dist: uvicorn>=0.30
+Requires-Dist: httpx>=0.27
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: pytest-cov>=5.0; extra == "dev"
+Requires-Dist: ruff>=0.5; extra == "dev"
+Requires-Dist: black>=24.4; extra == "dev"
+Requires-Dist: mypy>=1.10; extra == "dev"
+Requires-Dist: types-PyYAML; extra == "dev"
+Requires-Dist: pre-commit>=3.7; extra == "dev"
+
+# NewSpace Hybrid Digital Twin — Master Integrated Repository
+
+This repository is the consolidated merge of Deliverables 1A–3D into a single professional codebase, now strengthened with a production-hardening layer.
+
+## What this integrated repo contains
+- Phase 1 foundation: configs, Docker, PostGIS schema, ingestion, preprocessing, feature assembly, tiling, manifests.
+- Phase 2 modelling: dataset loaders, baseline models, experiment registry, comparison, calibration, ablation, benchmark assets.
+- Phase 2D fusion: recency-aware weighting, confidence/disagreement uncertainty, cross-source consistency scoring.
+- Phase 3A digital twin: state model, risk scoring, priority ranking, action recommendation, JSONL persistence.
+- Phase 3B decision outputs: ranked CSV export, GeoJSON export, markdown decision summary.
+- Phase 3C API layer: FastAPI application with health, fusion, twin update, and decision output endpoints.
+- Phase 3D validation runtime: longitudinal summaries, reliability metrics, consistency checks, validation report generation.
+
+## Merge policy used
+- Nothing useful was deleted.
+- Placeholder/scaffold files were replaced only where later deliverables supplied working implementations.
+- Non-source cache artifacts such as `.pytest_cache`, `__pycache__`, and `.pyc` files were removed.
+- Earlier scaffold entrypoints were preserved where they supported the pipeline contract.
+
+## Production-hardening pack added
+- Explicit `requirements.txt` and `requirements-dev.txt`
+- `.github/workflows/ci.yml`
+- `.dockerignore`
+- `scripts/bootstrap_env.sh`
+- `scripts/quality_gate.sh`
+- `scripts/run_e2e_smoke.py`
+- `docs/production_hardening.md`
+
+## Recommended quick start
+```bash
+bash scripts/bootstrap_env.sh
+source .venv/bin/activate
+pytest -q
+python scripts/run_e2e_smoke.py
+python scripts/update_twin_example.py
+python scripts/generate_decision_outputs.py
+python scripts/run_validation_runtime.py
+```
+
+## Make targets
+```bash
+make bootstrap
+make test
+make smoke
+make quality
+make run-db
+```
+
+## Key additions in this master integration
+- `src/newspace_twin/fusion/*`
+- `src/newspace_twin/twin/*`
+- `src/newspace_twin/outputs/reports.py`
+- `src/newspace_twin/api/*`
+- `src/newspace_twin/validation_runtime/*`
+- `configs/api.yaml`
+- `configs/validation_runtime.yaml`
+
+See `docs/master_integration_audit.md` for the original merge rationale and replacement map, and `docs/production_hardening.md` for the hardening layer.
