@@ -1,5 +1,5 @@
 modality: sensors
-relative_raw_dir: data/raw/sensors/{aoi_id}
+relative_raw_dir: data/raw/{aoi_id}/sensors
 file_globs:
   - "*.csv"
 required_columns:

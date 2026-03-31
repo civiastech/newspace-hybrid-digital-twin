@@ -1,7 +1,7 @@
 modality: uav
-relative_raw_dir: data/raw/uav/{aoi_id}
+relative_raw_dir: data/raw/{aoi_id}/uav
 file_globs:
-  - "*.tif"
+  - "*.npz"
   - "*.tiff"
   - "*.jp2"
 crs_required: true

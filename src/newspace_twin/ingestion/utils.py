@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Iterable
 
+import numpy as np
 import pandas as pd
 import rasterio
 from shapely.geometry import box
@@ -21,6 +22,31 @@ def find_matching_files(root_dir: Path, file_globs: Iterable[str]) -> list[Path]
 
 
 def build_raster_record(file_path: Path, modality: str, aoi_id: str) -> RegistryRecord:
+    suffix = file_path.suffix.lower()
+
+    if suffix == ".npz":
+        data = np.load(file_path)
+        first_key = list(data.files)[0]
+        arr = data[first_key]
+
+        metadata = {
+            "driver": "npz",
+            "shape": list(arr.shape),
+            "bands": list(data.files),
+            "synthetic": True,
+        }
+
+        return RegistryRecord(
+            dataset_id=file_path.stem,
+            modality=modality,
+            source_uri=str(file_path),
+            checksum=sha256_file(file_path),
+            aoi_id=aoi_id,
+            crs_epsg=4326,
+            metadata=metadata,
+            footprint_wkt=None,
+        )
+
     with rasterio.open(file_path) as src:
         bounds = src.bounds
         footprint = box(bounds.left, bounds.bottom, bounds.right, bounds.top).wkt
@@ -33,6 +59,7 @@ def build_raster_record(file_path: Path, modality: str, aoi_id: str) -> Registry
             "driver": src.driver,
             "transform": tuple(src.transform),
         }
+
     return RegistryRecord(
         dataset_id=file_path.stem,
         modality=modality,
@@ -51,11 +78,13 @@ def build_csv_record(file_path: Path, modality: str, aoi_id: str) -> RegistryRec
         "rows": int(len(frame)),
         "columns": list(frame.columns),
     }
+
     acquired_at = None
     if "timestamp" in frame.columns and not frame.empty:
         timestamps = pd.to_datetime(frame["timestamp"], errors="coerce", utc=True)
         if timestamps.notna().any():
             acquired_at = timestamps.min().to_pydatetime()
+
     return RegistryRecord(
         dataset_id=file_path.stem,
         modality=modality,

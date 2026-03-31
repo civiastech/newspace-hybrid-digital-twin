@@ -1,7 +1,7 @@
 modality: sentinel2
-relative_raw_dir: data/raw/sentinel2/{aoi_id}
+relative_raw_dir: data/raw/{aoi_id}/sentinel2
 file_globs:
-  - "*.tif"
+  - "*.npz"
   - "*.tiff"
   - "*.jp2"
 crs_required: true

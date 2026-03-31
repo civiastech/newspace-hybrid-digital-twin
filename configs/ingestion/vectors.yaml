@@ -1,5 +1,5 @@
 modality: vectors
-relative_raw_dir: data/raw/vectors/{aoi_id}
+relative_raw_dir: data/raw/{aoi_id}/vectors
 file_globs:
   - "*.geojson"
   - "*.gpkg"
