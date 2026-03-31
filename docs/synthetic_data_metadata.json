@@ -1,0 +1,15 @@
+{
+  "aoi_id": "wildfire_case_aoi",
+  "crs_epsg": 4326,
+  "bounds": [
+    -8.5,
+    40.0,
+    -8.0,
+    40.5
+  ],
+  "grid_size": [
+    256,
+    256
+  ],
+  "notes": "Synthetic but physically informed wildfire proxy dataset for pipeline and model testing. Not for scientific claims."
+}
