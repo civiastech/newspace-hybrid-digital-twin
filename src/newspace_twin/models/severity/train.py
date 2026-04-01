@@ -2,14 +2,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import numpy as np
 import torch
+from sklearn.metrics import confusion_matrix
 from torch import nn
 
 from newspace_twin.datasets.loaders import ClassificationTileDataset, build_dataloader
 from newspace_twin.training.engine import TrainConfig, train_one_epoch
 from newspace_twin.training.metrics import classification_metrics
 from newspace_twin.training.utils import save_checkpoint
-
 from .model import SeverityClassifier
 
 
@@ -43,12 +44,15 @@ def evaluate_one_epoch(
             all_targets.append(y.cpu())
 
     if n_batches == 0:
-        return 0.0, {"accuracy": 0.0, "macro_f1": 0.0}
+        return 0.0, {"accuracy": 0.0, "macro_f1": 0.0, "confusion_matrix": [[0, 0, 0, 0] for _ in range(4)]}
 
     preds_cat = torch.cat(all_preds)
     targets_cat = torch.cat(all_targets)
 
     metrics = classification_metrics(preds_cat, targets_cat, num_classes=4)
+    cm = confusion_matrix(targets_cat.numpy(), preds_cat.numpy(), labels=[0, 1, 2, 3])
+    metrics["confusion_matrix"] = cm.tolist()
+
     return total_loss / n_batches, metrics
 
 
@@ -64,7 +68,16 @@ def train_severity_classifier(manifest_csv: str | Path, out_dir: str | Path, cfg
 
     model = SeverityClassifier(in_channels=in_channels, num_classes=4).to(cfg.device)
 
-    criterion = nn.CrossEntropyLoss()
+    # Class-weighted loss
+    class_counts = train_ds.df["class_id"].value_counts().sort_index()
+    num_classes = 4
+    counts = np.array([class_counts.get(i, 1) for i in range(num_classes)], dtype=np.float32)
+    weights = 1.0 / counts
+    weights = weights / weights.sum() * num_classes
+    class_weights = torch.tensor(weights, dtype=torch.float32).to(cfg.device)
+
+    criterion = nn.CrossEntropyLoss(weight=class_weights)
+
     optimizer = torch.optim.Adam(
         model.parameters(),
         lr=cfg.learning_rate,
@@ -92,10 +105,12 @@ def train_severity_classifier(manifest_csv: str | Path, out_dir: str | Path, cfg
             best_metrics = val_metrics
 
         print(
-            f"Epoch {epoch + 1}: "
-            f"train_loss={train_loss:.4f}, "
-            f"val_loss={val_loss:.4f}, "
-            f"val_macro_f1={val_metrics.get('macro_f1', 0.0):.4f}"
+            f"\nEpoch {epoch + 1}"
+            f"\ntrain_loss={train_loss:.4f}"
+            f"\nval_loss={val_loss:.4f}"
+            f"\nval_accuracy={val_metrics.get('accuracy', 0.0):.4f}"
+            f"\nval_macro_f1={val_metrics.get('macro_f1', 0.0):.4f}"
+            f"\nconfusion_matrix={val_metrics.get('confusion_matrix')}\n"
         )
 
     ckpt = Path(out_dir) / "severity.pt"
@@ -109,6 +124,7 @@ def train_severity_classifier(manifest_csv: str | Path, out_dir: str | Path, cfg
             "best_val_loss": best_val_loss,
             "best_val_metrics": best_metrics,
             "history": history,
+            "class_weights": weights.tolist(),
         },
     )
 
@@ -117,4 +133,5 @@ def train_severity_classifier(manifest_csv: str | Path, out_dir: str | Path, cfg
         "best_val_loss": best_val_loss,
         "best_val_metrics": best_metrics,
         "history": history,
+        "class_weights": weights.tolist(),
     }
