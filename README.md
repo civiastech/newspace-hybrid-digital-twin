@@ -3,7 +3,6 @@
 
 ### A Physics-Informed Multi-Sensor AI Framework for Predictive Risk Intelligence
 
----
 
 ## 🏷️ Badges
 
@@ -28,7 +27,6 @@ This platform transforms fragmented monitoring into:
 * 🧠 AI-driven decision intelligence
 * ⚠️ Early warning for infrastructure & environmental risks
 
----
 
 ## 🎯 Problem Statement
 
@@ -46,7 +44,7 @@ Critical processes like:
 
 remain **undetected until failure**.
 
----
+
 
 ## 💡 Solution
 
@@ -58,7 +56,7 @@ The NewSpace platform introduces:
 ✔ Time-aware digital twin
 ✔ Decision-support outputs
 
----
+
 
 # 🧠 SYSTEM ARCHITECTURE
 
@@ -95,7 +93,6 @@ N --> Q[Recommended Actions]
 Q --> R[Decision Support Outputs]
 ```
 
----
 
 # 🔄 PIPELINE FLOW
 
@@ -114,7 +111,6 @@ I --> J[Digital Twin Update]
 J --> K[Risk Outputs]
 ```
 
----
 
 # 🧩 CORE MODULES
 
@@ -131,7 +127,6 @@ J --> K[Risk Outputs]
 | **Experiments**   | Benchmarking & analysis        |
 | **Outputs**       | Reports & geospatial outputs   |
 
----
 
 # 🧠 AI COMPONENTS
 
@@ -140,8 +135,6 @@ J --> K[Risk Outputs]
 * ⚠️ Anomaly Detection (sensor signals)
 * 🔗 Multi-modal fusion scoring
 * 📉 Calibration & uncertainty estimation
-
----
 
 # 🔬 RESEARCH INNOVATION
 
@@ -158,7 +151,6 @@ This combines:
 
 into a **single decision-ready metric**.
 
----
 
 # 🔥 USE CASE: WILDFIRE DIGITAL TWIN
 
@@ -167,7 +159,6 @@ into a **single decision-ready metric**.
 * Multi-modal risk fusion
 * Temporal state tracking
 
----
 
 # ⚙️ INSTALLATION
 
@@ -181,7 +172,6 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
----
 
 # ▶️ RUN PIPELINE
 
@@ -189,7 +179,7 @@ pip install -r requirements.txt
 python -m newspace_twin.pipeline --stage all
 ```
 
----
+
 
 # 🧪 TESTING
 
@@ -197,7 +187,6 @@ python -m newspace_twin.pipeline --stage all
 pytest
 ```
 
----
 
 # 📊 OUTPUTS
 
@@ -207,7 +196,6 @@ pytest
 * 📉 Calibration plots
 * 🧠 Digital twin state logs
 
----
 
 # 📈 PROJECT STATUS
 
@@ -220,7 +208,6 @@ pytest
 | Real Data Integration | 🚧 Ongoing   |
 | Deployment            | 🔜 Planned   |
 
----
 
 # 🧑‍💻 PROJECT LEADERSHIP
 
@@ -228,7 +215,6 @@ pytest
 * AI Researcher
 * Digital Twin Architect
 
----
 
 # 🤖 ROLE OF AI
 
@@ -239,7 +225,6 @@ AI acts as the **core integrator**:
 * quantifies uncertainty
 * drives decisions
 
----
 
 # 🤝 FUNDING & COLLABORATION
 
@@ -250,14 +235,12 @@ We are open to:
 * 🌍 Government partnerships
 * 🔬 Research institutions
 
----
 
 # 🌐 VISION
 
 > To build a **globally scalable, intelligent digital twin system**
 > for infrastructure and environmental risk management.
 
----
 
 # ⭐ SUPPORT THE PROJECT
 
@@ -269,7 +252,6 @@ If you believe in this vision:
 🤝 Collaborate  
 ```
 
----
 
 # ⚡ FINAL STATEMENT
 
