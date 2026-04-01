@@ -24,13 +24,37 @@ def _load_yaml(path: str | Path) -> dict[str, Any]:
 
 def _combine_tile_manifests(manifests: list[Path]) -> pd.DataFrame:
     frames = []
+
     for manifest in manifests:
-        if manifest.exists():
+        # Skip if file does not exist
+        if not manifest.exists():
+            continue
+
+        # Skip empty files
+        if manifest.stat().st_size == 0:
+            continue
+
+        # Try reading safely
+        try:
             frame = pd.read_csv(manifest)
-            feature_group = manifest.stem.replace('_tiles', '')
-            frame['feature_group'] = feature_group
-            frames.append(frame)
-    return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+        except pd.errors.EmptyDataError:
+            continue
+
+        # Skip empty DataFrame
+        if frame.empty:
+            continue
+
+        # Add feature group label
+        feature_group = manifest.stem.replace("_tiles", "")
+        frame["feature_group"] = feature_group
+
+        frames.append(frame)
+
+    # Combine safely
+    if frames:
+        return pd.concat(frames, ignore_index=True)
+
+    return pd.DataFrame()
 
 
 def run_dataset_build(config: AppConfig) -> dict[str, object]:

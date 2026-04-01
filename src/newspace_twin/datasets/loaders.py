@@ -90,4 +90,34 @@ class AnomalySeriesDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
 
 
 def build_dataloader(dataset: Dataset, batch_size: int = 4, shuffle: bool = False) -> DataLoader:
-    return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+    return DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=shuffle,
+        collate_fn=classification_collate_fn,
+    )
+
+
+def _pad_tensor_to_shape(x: torch.Tensor, target_h: int, target_w: int) -> torch.Tensor:
+    c, h, w = x.shape
+    out = torch.zeros((c, target_h, target_w), dtype=x.dtype)
+
+    h_use = min(h, target_h)
+    w_use = min(w, target_w)
+
+    out[:, :h_use, :w_use] = x[:, :h_use, :w_use]
+    return out
+
+
+def classification_collate_fn(batch):
+    xs, ys = zip(*batch)
+
+    max_h = max(x.shape[1] for x in xs)
+    max_w = max(x.shape[2] for x in xs)
+
+    xs_padded = [_pad_tensor_to_shape(x, max_h, max_w) for x in xs]
+
+    x_batch = torch.stack(xs_padded, dim=0)
+    y_batch = torch.stack(list(ys), dim=0)
+
+    return x_batch, y_batch
