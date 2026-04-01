@@ -1,7 +1,7 @@
 
 # 🌍 NewSpace Hybrid Digital Twin Platform
 
-### A Physics-Informed Multi-Sensor AI Framework for Predictive Risk Intelligence
+## A Physics-Informed Multi-Sensor AI Framework for Predictive Risk Intelligence
 
 
 ## 🏷️ Badges
