@@ -11,7 +11,7 @@ data/processed/
 data/manifests/
 data/features/
 data/predictions/
-#data/twin/
+data/twin/
 data/qc/
 data/reports/
 mlruns/
