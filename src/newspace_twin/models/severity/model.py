@@ -5,7 +5,7 @@ from torch import nn
 
 
 class SeverityClassifier(nn.Module):
-    def __init__(self, in_channels: int = 9, num_classes: int = 3) -> None:
+    def __init__(self, in_channels: int = 9, num_classes: int = 4) -> None:
         super().__init__()
 
         self.features = nn.Sequential(
@@ -31,5 +31,5 @@ class SeverityClassifier(nn.Module):
         return self.classifier(feats)
 
 
-def build_model(in_channels: int = 9, num_classes: int = 3) -> SeverityClassifier:
+def build_model(in_channels: int = 9, num_classes: int = 4) -> SeverityClassifier:
     return SeverityClassifier(in_channels=in_channels, num_classes=num_classes)

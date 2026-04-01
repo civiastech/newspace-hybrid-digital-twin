@@ -8,7 +8,6 @@ from typing import Any
 import yaml
 
 from newspace_twin.logging.setup import configure_logging, logger
-from newspace_twin.registry.repository import write_registry_snapshot
 from newspace_twin.settings.config import AppConfig
 from newspace_twin.settings.paths import ensure_project_paths
 
@@ -25,7 +24,7 @@ class BaseIngestor(ABC):
     def __init__(self, config: AppConfig, modality_config_path: str) -> None:
         self.config = config
         self.modality_config_path = modality_config_path
-        with open(modality_config_path, "r", encoding="utf-8") as handle:
+        with open(modality_config_path, encoding="utf-8") as handle:
             self.modality_config: dict[str, Any] = yaml.safe_load(handle)
         self.paths = ensure_project_paths(config)
 

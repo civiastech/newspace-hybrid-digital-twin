@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any
 
 
 @dataclass
@@ -15,12 +15,12 @@ class TwinState:
     uncertainty_score: float
     consistency_score: float
     risk_score: float
-    priority_rank: Optional[int] = None
+    priority_rank: int | None = None
     recommended_action: str = 'monitor'
-    previous_state_id: Optional[str] = None
-    state_metadata: Dict[str, Any] = field(default_factory=dict)
+    previous_state_id: str | None = None
+    state_metadata: dict[str, Any] = field(default_factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         row = asdict(self)
         row['timestamp'] = self.timestamp.isoformat()
         return row
@@ -35,9 +35,9 @@ class StateHistoryEntry:
     fused_condition_score: float
     severity_class: str
     recommended_action: str
-    previous_state_id: Optional[str] = None
+    previous_state_id: str | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         row = asdict(self)
         row['timestamp'] = self.timestamp.isoformat()
         return row
@@ -47,7 +47,7 @@ def build_state_id(unit_id: str, timestamp: datetime) -> str:
     return f'{unit_id}__{timestamp.strftime("%Y%m%dT%H%M%S")}'
 
 
-def state_delta(current: TwinState, previous: Optional[TwinState]) -> Dict[str, float]:
+def state_delta(current: TwinState, previous: TwinState | None) -> dict[str, float]:
     if previous is None:
         return {
             'delta_risk_score': 0.0,

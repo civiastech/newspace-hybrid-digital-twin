@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import csv
 import json
+from collections.abc import Iterable
 from dataclasses import asdict
 from pathlib import Path
-from typing import Iterable
 
 from newspace_twin.registry.models import RegistryRecord
-
 
 CSV_FIELDS = [
     "dataset_id",

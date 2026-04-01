@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict
 
 
 @dataclass(slots=True)
@@ -11,7 +10,7 @@ class WeightConfig:
     anomaly_weight: float = 0.3
 
 
-def normalize_weights(weights: Dict[str, float]) -> Dict[str, float]:
+def normalize_weights(weights: dict[str, float]) -> dict[str, float]:
     total = float(sum(weights.values()))
     if total <= 0:
         return {k: 0.0 for k in weights}

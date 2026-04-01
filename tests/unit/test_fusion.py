@@ -1,7 +1,9 @@
 
 from datetime import datetime, timedelta
+
 from newspace_twin.fusion import fuse_scores
 from newspace_twin.fusion.weighting import WeightConfig
+
 
 def test_fusion_basic():
     now = datetime.utcnow()

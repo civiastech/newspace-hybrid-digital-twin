@@ -41,13 +41,13 @@ def run_validation(config: AppConfig) -> dict[str, object]:
 
     vector_manifest = manifest_root / "vectors_registry.csv"
     vector_paths = [Path(row["source_uri"]) for row in read_registry_snapshot(vector_manifest)] if vector_manifest.exists() else []
-    with open(config.validation_configs["vectors"], "r", encoding="utf-8") as handle:
+    with open(config.validation_configs["vectors"], encoding="utf-8") as handle:
         vector_rules = yaml.safe_load(handle)
     geometry_report = validate_vector_files(vector_paths, allow_repair=vector_rules["vector_validation"].get("allow_repair", True))
 
     sensor_manifest = manifest_root / "sensors_registry.csv"
     sensor_paths = [Path(row["source_uri"]) for row in read_registry_snapshot(sensor_manifest)] if sensor_manifest.exists() else []
-    with open(config.validation_configs["sensors"], "r", encoding="utf-8") as handle:
+    with open(config.validation_configs["sensors"], encoding="utf-8") as handle:
         sensor_rules = yaml.safe_load(handle)
     timeseries_report = validate_sensor_csv(sensor_paths, sensor_rules)
 

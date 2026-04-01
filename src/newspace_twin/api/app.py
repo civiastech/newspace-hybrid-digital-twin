@@ -1,14 +1,16 @@
 from __future__ import annotations
+
 from fastapi import FastAPI
+
 from .schemas import (
-    HealthResponse,
-    FusionRequest,
-    FusionResponse,
-    TwinUpdateRequest,
     DecisionOutputRequest,
     DecisionOutputResponse,
+    FusionRequest,
+    FusionResponse,
+    HealthResponse,
+    TwinUpdateRequest,
 )
-from .services import run_fusion, run_twin_update, generate_decision_outputs
+from .services import generate_decision_outputs, run_fusion, run_twin_update
 
 app = FastAPI(title="NewSpace Hybrid Digital Twin API", version="0.1.0")
 

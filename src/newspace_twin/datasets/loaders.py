@@ -33,14 +33,26 @@ class NumpyAugment:
             if isinstance(out_y, np.ndarray):
                 out_y = np.flip(out_y, axis=0).copy()
         if self.cfg.noise_std > 0:
-            out_x = out_x + np.random.normal(0.0, self.cfg.noise_std, size=out_x.shape).astype(out_x.dtype)
+            out_x = (
+                out_x
+                + np.random.normal(0.0, self.cfg.noise_std, size=out_x.shape).astype(
+                    out_x.dtype
+                )
+            )
         return out_x, out_y
 
 
 class SegmentationTileDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
-    def __init__(self, manifest_csv: str | Path, split: str = 'train', transform: Callable | None = None) -> None:
+    def __init__(
+        self,
+        manifest_csv: str | Path,
+        split: str = 'train',
+        transform: Callable | None = None,
+    ) -> None:
         self.df = pd.read_csv(manifest_csv)
-        self.df = self.df[(self.df['split'] == split) & self.df['label_uri'].notna()].reset_index(drop=True)
+        self.df = self.df[
+            (self.df['split'] == split) & self.df['label_uri'].notna()
+        ].reset_index(drop=True)
         self.transform = transform
 
     def __len__(self) -> int:
@@ -58,7 +70,12 @@ class SegmentationTileDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
 
 
 class ClassificationTileDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
-    def __init__(self, manifest_csv: str | Path, split: str = 'train', transform: Callable | None = None) -> None:
+    def __init__(
+        self,
+        manifest_csv: str | Path,
+        split: str = 'train',
+        transform: Callable | None = None,
+    ) -> None:
         self.df = pd.read_csv(manifest_csv)
         self.df = self.df[self.df['split'] == split].reset_index(drop=True)
         self.transform = transform
@@ -78,25 +95,32 @@ class ClassificationTileDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
 class AnomalySeriesDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
     def __init__(self, features_csv: str | Path) -> None:
         self.df = pd.read_csv(features_csv)
-        feature_cols = [c for c in self.df.columns if c not in {'sample_id', 'split', 'target'}]
+        feature_cols = [
+            c
+            for c in self.df.columns
+            if c not in {'sample_id', 'split', 'target'}
+        ]
         self.x = self.df[feature_cols].astype('float32').to_numpy()
-        self.y = self.df.get('target', pd.Series(np.zeros(len(self.df), dtype=np.float32))).astype('float32').to_numpy()
+        default_target = pd.Series(
+            np.zeros(len(self.df), dtype=np.float32)
+        )
+        self.y = self.df.get('target', default_target).astype(
+            'float32'
+        ).to_numpy()
 
     def __len__(self) -> int:
         return len(self.df)
 
     def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
-        return torch.from_numpy(self.x[idx]), torch.tensor(self.y[idx], dtype=torch.float32)
+        return torch.from_numpy(self.x[idx]), torch.tensor(
+            self.y[idx], dtype=torch.float32
+        )
 
 
-def build_dataloader(dataset: Dataset, batch_size: int = 4, shuffle: bool = False) -> DataLoader:
-    return DataLoader(
-        dataset,
-        batch_size=batch_size,
-        shuffle=shuffle,
-        collate_fn=classification_collate_fn,
-    )
-
+def build_dataloader(
+    dataset: Dataset, batch_size: int = 4, shuffle: bool = False
+) -> DataLoader:
+    return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
 
 def _pad_tensor_to_shape(x: torch.Tensor, target_h: int, target_w: int) -> torch.Tensor:
     c, h, w = x.shape
@@ -121,3 +145,14 @@ def classification_collate_fn(batch):
     y_batch = torch.stack(list(ys), dim=0)
 
     return x_batch, y_batch
+
+
+def build_dataloader(dataset: Dataset, batch_size: int = 4, shuffle: bool = False) -> DataLoader:
+    collate = classification_collate_fn if isinstance(dataset, ClassificationTileDataset) else None
+
+    return DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=shuffle,
+        collate_fn=collate,
+    )

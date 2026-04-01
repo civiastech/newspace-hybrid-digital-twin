@@ -1,16 +1,18 @@
 from __future__ import annotations
+
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any
 
 from newspace_twin.fusion.scoring import fuse_scores
 from newspace_twin.fusion.weighting import WeightConfig
-from newspace_twin.twin.updater import update_twin_state
-from newspace_twin.outputs.tables import rank_states, export_ranked_table_csv
 from newspace_twin.outputs.geojson import states_to_geojson
 from newspace_twin.outputs.reports import build_decision_summary_markdown
+from newspace_twin.outputs.tables import export_ranked_table_csv, rank_states
+from newspace_twin.twin.updater import update_twin_state
 
-def run_fusion(payload: Dict[str, Any]) -> Dict[str, Any]:
+
+def run_fusion(payload: dict[str, Any]) -> dict[str, Any]:
     now = datetime.utcnow()
     timestamps = {
         k: datetime.fromisoformat(v.replace("Z", "+00:00")) if isinstance(v, str) and ("+" in v or v.endswith("Z"))
@@ -26,7 +28,7 @@ def run_fusion(payload: Dict[str, Any]) -> Dict[str, Any]:
     )
     return result
 
-def run_twin_update(payload: Dict[str, Any]):
+def run_twin_update(payload: dict[str, Any]):
     prev = payload.get("previous_state")
     previous_state_obj = None
     if prev:
@@ -58,7 +60,7 @@ def run_twin_update(payload: Dict[str, Any]):
     )
     return state.to_dict()
 
-def generate_decision_outputs(states: List[Dict[str, Any]], output_dir: str) -> Dict[str, Any]:
+def generate_decision_outputs(states: list[dict[str, Any]], output_dir: str) -> dict[str, Any]:
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     ranked = rank_states(states)

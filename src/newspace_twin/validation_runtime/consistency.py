@@ -1,7 +1,9 @@
 from __future__ import annotations
-from typing import Iterable, Dict, Any, List
 
-def evaluate_state_consistency(states: Iterable[dict], max_allowed_jump: float = 0.5) -> List[dict]:
+from collections.abc import Iterable
+
+
+def evaluate_state_consistency(states: Iterable[dict], max_allowed_jump: float = 0.5) -> list[dict]:
     rows = sorted(list(states), key=lambda x: (x["unit_id"], x["timestamp"]))
     issues = []
     previous_by_unit = {}

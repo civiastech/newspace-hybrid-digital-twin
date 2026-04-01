@@ -1,8 +1,10 @@
 from __future__ import annotations
-from collections import defaultdict
-from typing import Iterable, Dict, Any, List
 
-def build_longitudinal_summary(states: Iterable[dict]) -> List[dict]:
+from collections import defaultdict
+from collections.abc import Iterable
+
+
+def build_longitudinal_summary(states: Iterable[dict]) -> list[dict]:
     grouped = defaultdict(list)
     for s in states:
         grouped[s["unit_id"]].append(s)

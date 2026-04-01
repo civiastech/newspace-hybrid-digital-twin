@@ -1,7 +1,10 @@
 from __future__ import annotations
-from typing import Iterable, Dict, Any
 
-def compute_reliability_metrics(states: Iterable[dict]) -> Dict[str, Any]:
+from collections.abc import Iterable
+from typing import Any
+
+
+def compute_reliability_metrics(states: Iterable[dict]) -> dict[str, Any]:
     rows = list(states)
     if not rows:
         return {

@@ -1,9 +1,10 @@
 from pathlib import Path
 
-from newspace_twin.outputs.tables import export_ranked_table_csv
-from newspace_twin.outputs.geojson import states_to_geojson
 from newspace_twin.outputs.figures import build_risk_summary_figure
+from newspace_twin.outputs.geojson import states_to_geojson
 from newspace_twin.outputs.reports import build_decision_summary_markdown
+from newspace_twin.outputs.tables import export_ranked_table_csv
+
 
 def sample_states():
     return [

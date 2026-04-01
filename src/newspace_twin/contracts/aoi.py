@@ -21,7 +21,7 @@ class AOIContract:
 
 
 def load_aoi_contract(config_path: str | Path, project_root: str | Path = '.') -> AOIContract:
-    with open(config_path, 'r', encoding='utf-8') as handle:
+    with open(config_path, encoding='utf-8') as handle:
         raw: dict[str, Any] = yaml.safe_load(handle)
     geometry_file = raw.get('geometry_file')
     geometry_wkt = 'GEOMETRYCOLLECTION EMPTY'

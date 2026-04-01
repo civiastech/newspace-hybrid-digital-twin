@@ -15,14 +15,13 @@ from newspace_twin.registry.repository import read_registry_snapshot
 from newspace_twin.settings.config import AppConfig
 from newspace_twin.settings.paths import ensure_project_paths
 
-
 RASTER_MODALITIES = {'sentinel1', 'sentinel2', 'uav'}
 VECTOR_MODALITIES = {'vectors'}
 TIMESERIES_MODALITIES = {'sensors'}
 
 
 def _load_yaml(path: str | Path) -> dict[str, Any]:
-    with open(path, 'r', encoding='utf-8') as handle:
+    with open(path, encoding='utf-8') as handle:
         return yaml.safe_load(handle)
 
 

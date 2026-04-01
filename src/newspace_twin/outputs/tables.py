@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import csv
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable, List
 
 
-def rank_states(states: Iterable[dict]) -> List[dict]:
+def rank_states(states: Iterable[dict]) -> list[dict]:
     ranked = sorted(
         [dict(state) for state in states],
         key=lambda row: (

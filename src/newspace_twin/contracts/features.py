@@ -1,5 +1,8 @@
 from __future__ import annotations
+
 from dataclasses import dataclass, field
+
+
 @dataclass(slots=True)
 class FeatureContract:
     feature_id: str

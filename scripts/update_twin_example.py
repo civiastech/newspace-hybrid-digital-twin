@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from newspace_twin.twin.updater import update_twin_state
 from newspace_twin.twin.persistence import save_states_jsonl
+from newspace_twin.twin.updater import update_twin_state
 
 
 def main() -> None:

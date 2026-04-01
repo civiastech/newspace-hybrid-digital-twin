@@ -23,6 +23,7 @@ src/newspace_twin/datasets/loaders.py
 src/newspace_twin/datasets/ontology.py
 src/newspace_twin/datasets/splits.py
 src/newspace_twin/datasets/stats.py
+src/newspace_twin/datasets/unified_dataset.py
 src/newspace_twin/experiments/__init__.py
 src/newspace_twin/experiments/ablation.py
 src/newspace_twin/experiments/benchmarks.py
@@ -39,6 +40,7 @@ src/newspace_twin/features/optical.py
 src/newspace_twin/features/sar.py
 src/newspace_twin/features/temporal.py
 src/newspace_twin/features/terrain.py
+src/newspace_twin/features/wildfire_features.py
 src/newspace_twin/fusion/__init__.py
 src/newspace_twin/fusion/consistency.py
 src/newspace_twin/fusion/recency.py
@@ -56,6 +58,7 @@ src/newspace_twin/ingestion/vectors.py
 src/newspace_twin/logging/__init__.py
 src/newspace_twin/logging/setup.py
 src/newspace_twin/models/__init__.py
+src/newspace_twin/models/wildfire_model.py
 src/newspace_twin/models/anomaly/__init__.py
 src/newspace_twin/models/anomaly/infer.py
 src/newspace_twin/models/anomaly/model.py
@@ -92,6 +95,7 @@ src/newspace_twin/settings/config.py
 src/newspace_twin/settings/paths.py
 src/newspace_twin/tiling/__init__.py
 src/newspace_twin/tiling/grid.py
+src/newspace_twin/tiling/labels.py
 src/newspace_twin/tiling/manifests.py
 src/newspace_twin/tiling/raster_tiles.py
 src/newspace_twin/training/__init__.py

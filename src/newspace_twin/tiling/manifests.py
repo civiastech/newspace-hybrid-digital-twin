@@ -14,11 +14,12 @@ from newspace_twin.datasets.stats import compute_dataset_stats
 from newspace_twin.settings.config import AppConfig
 from newspace_twin.settings.paths import ensure_project_paths
 from newspace_twin.tiling.grid import build_analysis_grid
+from newspace_twin.tiling.labels import build_tile_labels_from_severity_mask
 from newspace_twin.tiling.raster_tiles import tile_feature_raster
 
 
 def _load_yaml(path: str | Path) -> dict[str, Any]:
-    with open(path, 'r', encoding='utf-8') as handle:
+    with open(path, encoding='utf-8') as handle:
         return yaml.safe_load(handle)
 
 
@@ -92,6 +93,17 @@ def run_dataset_build(config: AppConfig) -> dict[str, object]:
         summary_path = manifest_root / 'dataset_build_status.json'
         summary_path.write_text(json.dumps({'status': 'empty', 'grid': asdict(grid_result)}, indent=2), encoding='utf-8')
         return {'dataset_manifest': str(dataset_manifest_path), 'dataset_summary': str(summary_path), 'grid': asdict(grid_result)}
+
+    labels_path = project_root / 'data' / 'labels' / config.active_aoi / 'burn_severity_mask.npy'
+    if labels_path.exists() and not dataset_df.empty:
+        label_map = build_tile_labels_from_severity_mask(
+            grid_path=grid_path,
+            mask_path=labels_path,
+            aoi_geojson_path=aoi_geom_path,
+        )
+        dataset_df['class_id'] = dataset_df['unit_id'].map(label_map).fillna(0).astype(int)
+    else:
+        dataset_df['class_id'] = 0
 
     split_map = assign_splits(
         dataset_df['unit_id'].unique().tolist(),

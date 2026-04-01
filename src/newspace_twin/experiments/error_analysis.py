@@ -2,11 +2,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import torch
 
-from newspace_twin.datasets.loaders import ClassificationTileDataset, SegmentationTileDataset, build_dataloader
+from newspace_twin.datasets.loaders import (
+    ClassificationTileDataset,
+    SegmentationTileDataset,
+    build_dataloader,
+)
 from newspace_twin.models.segmentation.model import build_model as build_segmentation_model
 from newspace_twin.models.severity.model import build_model as build_severity_model
 

@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from tests.fixtures.build_training_fixture import build_training_fixture
+
 from newspace_twin.datasets.loaders import ClassificationTileDataset, SegmentationTileDataset
 from newspace_twin.models.anomaly.train import train_anomaly_model
 from newspace_twin.models.segmentation.train import train_segmentation
 from newspace_twin.models.severity.train import train_severity_classifier
 from newspace_twin.training.engine import TrainConfig
-from tests.fixtures.build_training_fixture import build_training_fixture
 
 
 def test_dataset_loaders_and_training_step(tmp_path: Path) -> None:

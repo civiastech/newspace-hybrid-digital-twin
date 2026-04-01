@@ -1,6 +1,8 @@
-from fastapi.testclient import TestClient
-from newspace_twin.api.app import app
 from datetime import datetime
+
+from fastapi.testclient import TestClient
+
+from newspace_twin.api.app import app
 
 client = TestClient(app)
 

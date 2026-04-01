@@ -3,11 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 
 import yaml
+from tests.fixtures.build_training_fixture import build_training_fixture
 
 from newspace_twin.experiments.comparison import export_comparison_reports
 from newspace_twin.experiments.error_analysis import export_error_analysis
 from newspace_twin.experiments.runner import run_experiment
-from tests.fixtures.build_training_fixture import build_training_fixture
 
 
 def test_run_experiment_and_reports(tmp_path: Path) -> None:

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 
 def build_decision_summary_markdown(states: Iterable[dict], output_path: str | Path) -> Path:

@@ -9,17 +9,60 @@ from newspace_twin.datasets.loaders import ClassificationTileDataset, build_data
 from newspace_twin.training.engine import TrainConfig, train_one_epoch
 from newspace_twin.training.metrics import classification_metrics
 from newspace_twin.training.utils import save_checkpoint
+
 from .model import SeverityClassifier
 
 
-def train_severity_classifier(manifest_csv: str | Path, out_dir: str | Path, cfg: TrainConfig) -> dict:
-    ds = ClassificationTileDataset(manifest_csv, split="train")
-    loader = build_dataloader(ds, batch_size=cfg.batch_size, shuffle=True)
+def evaluate_one_epoch(
+    model: torch.nn.Module,
+    loader,
+    criterion,
+    device: str,
+) -> tuple[float, dict]:
+    model.eval()
 
-    x, y = next(iter(loader))
+    total_loss = 0.0
+    n_batches = 0
+
+    all_preds = []
+    all_targets = []
+
+    with torch.no_grad():
+        for x, y in loader:
+            x = x.to(device)
+            y = y.to(device)
+
+            logits = model(x)
+            loss = criterion(logits, y)
+
+            total_loss += float(loss.item())
+            n_batches += 1
+
+            preds = logits.argmax(dim=1)
+            all_preds.append(preds.cpu())
+            all_targets.append(y.cpu())
+
+    if n_batches == 0:
+        return 0.0, {"accuracy": 0.0, "macro_f1": 0.0}
+
+    preds_cat = torch.cat(all_preds)
+    targets_cat = torch.cat(all_targets)
+
+    metrics = classification_metrics(preds_cat, targets_cat, num_classes=4)
+    return total_loss / n_batches, metrics
+
+
+def train_severity_classifier(manifest_csv: str | Path, out_dir: str | Path, cfg: TrainConfig) -> dict:
+    train_ds = ClassificationTileDataset(manifest_csv, split="train")
+    val_ds = ClassificationTileDataset(manifest_csv, split="val")
+
+    train_loader = build_dataloader(train_ds, batch_size=cfg.batch_size, shuffle=True)
+    val_loader = build_dataloader(val_ds, batch_size=cfg.batch_size, shuffle=False)
+
+    x, _ = next(iter(train_loader))
     in_channels = x.shape[1]
 
-    model = SeverityClassifier(in_channels=in_channels, num_classes=3).to(cfg.device)
+    model = SeverityClassifier(in_channels=in_channels, num_classes=4).to(cfg.device)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(
@@ -29,18 +72,31 @@ def train_severity_classifier(manifest_csv: str | Path, out_dir: str | Path, cfg
     )
 
     history = []
+    best_val_loss = float("inf")
+    best_metrics = None
+
     for epoch in range(cfg.epochs):
-        loss = train_one_epoch(model, loader, criterion, optimizer, cfg.device)
-        history.append({"epoch": epoch + 1, "loss": loss})
+        train_loss = train_one_epoch(model, train_loader, criterion, optimizer, cfg.device)
+        val_loss, val_metrics = evaluate_one_epoch(model, val_loader, criterion, cfg.device)
 
-    x, y = next(iter(loader))
-    x = x.to(cfg.device)
+        row = {
+            "epoch": epoch + 1,
+            "train_loss": train_loss,
+            "val_loss": val_loss,
+            "val_metrics": val_metrics,
+        }
+        history.append(row)
 
-    with torch.no_grad():
-        logits = model(x)
-        preds = logits.argmax(dim=1).cpu()
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            best_metrics = val_metrics
 
-    metrics = classification_metrics(preds, y, num_classes=3)
+        print(
+            f"Epoch {epoch + 1}: "
+            f"train_loss={train_loss:.4f}, "
+            f"val_loss={val_loss:.4f}, "
+            f"val_macro_f1={val_metrics.get('macro_f1', 0.0):.4f}"
+        )
 
     ckpt = Path(out_dir) / "severity.pt"
     ckpt.parent.mkdir(parents=True, exist_ok=True)
@@ -49,11 +105,16 @@ def train_severity_classifier(manifest_csv: str | Path, out_dir: str | Path, cfg
         model,
         optimizer,
         cfg,
-        extra={"metrics": metrics, "history": history},
+        extra={
+            "best_val_loss": best_val_loss,
+            "best_val_metrics": best_metrics,
+            "history": history,
+        },
     )
 
     return {
         "checkpoint": str(ckpt),
-        "metrics": metrics,
+        "best_val_loss": best_val_loss,
+        "best_val_metrics": best_metrics,
         "history": history,
     }

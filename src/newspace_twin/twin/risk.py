@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Tuple
-
 
 def clamp01(x: float) -> float:
     return max(0.0, min(1.0, float(x)))
@@ -27,7 +25,7 @@ def compute_risk_score(
     return clamp01(score)
 
 
-def classify_priority(risk_score: float) -> Tuple[str, int]:
+def classify_priority(risk_score: float) -> tuple[str, int]:
     score = clamp01(risk_score)
     if score >= 0.85:
         return 'critical', 1

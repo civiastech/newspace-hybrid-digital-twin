@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable, List
 
 from .state import TwinState
 
@@ -16,11 +16,11 @@ def save_states_jsonl(states: Iterable[TwinState], output_path: str | Path) -> P
     return output_path
 
 
-def load_states_jsonl(path: str | Path) -> List[dict]:
+def load_states_jsonl(path: str | Path) -> list[dict]:
     path = Path(path)
     if not path.exists():
         return []
-    rows: List[dict] = []
+    rows: list[dict] = []
     with path.open('r', encoding='utf-8') as handle:
         for line in handle:
             rows.append(json.loads(line))

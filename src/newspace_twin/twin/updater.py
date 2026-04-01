@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 from newspace_twin.settings.config import AppConfig
 from newspace_twin.settings.paths import ensure_project_paths
@@ -21,8 +21,8 @@ def update_twin_state(
     anomaly_score: float,
     uncertainty_score: float,
     consistency_score: float,
-    previous_state: Optional[TwinState] = None,
-    state_metadata: Optional[Dict[str, Any]] = None,
+    previous_state: TwinState | None = None,
+    state_metadata: dict[str, Any] | None = None,
 ) -> TwinState:
     risk_score = compute_risk_score(
         fused_condition_score=fused_condition_score,

@@ -1,13 +1,15 @@
 from __future__ import annotations
-from pathlib import Path
-from typing import Iterable, Dict, Any
-import json
 
-from .longitudinal import build_longitudinal_summary
+import json
+from collections.abc import Iterable
+from pathlib import Path
+
 from .consistency import evaluate_state_consistency
+from .longitudinal import build_longitudinal_summary
 from .reliability import compute_reliability_metrics
 
-def build_validation_report(states: Iterable[dict], output_dir: str | Path) -> Dict[str, str]:
+
+def build_validation_report(states: Iterable[dict], output_dir: str | Path) -> dict[str, str]:
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 

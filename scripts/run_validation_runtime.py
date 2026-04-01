@@ -1,5 +1,7 @@
 from pathlib import Path
+
 from newspace_twin.validation_runtime.reports import build_validation_report
+
 
 def sample_states():
     return [

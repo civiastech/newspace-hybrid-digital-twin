@@ -13,7 +13,6 @@ from shapely.geometry import Polygon
 from newspace_twin.pipeline import run_pipeline
 
 
-
 def _write_raster(path: Path, crs: str = 'EPSG:4326') -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     data = np.ones((1, 10, 10), dtype=np.uint8)

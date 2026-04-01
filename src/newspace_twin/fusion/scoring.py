@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict
-import json
+from typing import Any
 
 from newspace_twin.settings.config import AppConfig
 from newspace_twin.settings.paths import ensure_project_paths
@@ -15,20 +15,20 @@ from .weighting import WeightConfig, normalize_weights
 
 
 def fuse_scores(
-    scores: Dict[str, float | None],
-    confidences: Dict[str, float | None],
-    timestamps: Dict[str, datetime | None],
+    scores: dict[str, float | None],
+    confidences: dict[str, float | None],
+    timestamps: dict[str, datetime | None],
     current_time: datetime,
     config: WeightConfig,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     base_weights = {
         'optical': config.optical_weight,
         'sar': config.sar_weight,
         'anomaly': config.anomaly_weight,
     }
 
-    active_weights: Dict[str, float] = {}
-    cleaned_scores: Dict[str, float] = {}
+    active_weights: dict[str, float] = {}
+    cleaned_scores: dict[str, float] = {}
 
     for key, base_weight in base_weights.items():
         score = scores.get(key)

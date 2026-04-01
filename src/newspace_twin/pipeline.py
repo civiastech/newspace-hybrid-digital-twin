@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import asdict
-from typing import Callable
 
 from newspace_twin.features.assembler import run_feature_assembly
 from newspace_twin.fusion.scoring import run_fusion_stage

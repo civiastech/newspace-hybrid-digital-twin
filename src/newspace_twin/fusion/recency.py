@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from datetime import datetime
 import math
+from datetime import datetime
 
 
 def exponential_decay(current_time: datetime, observation_time: datetime, tau_days: float = 10.0) -> float:

@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 
-from newspace_twin.twin.updater import update_twin_state
-from newspace_twin.twin.risk import compute_risk_score, classify_priority
 from newspace_twin.twin.actions import recommend_action
+from newspace_twin.twin.risk import classify_priority, compute_risk_score
+from newspace_twin.twin.updater import update_twin_state
 
 
 def test_risk_score_bounds():

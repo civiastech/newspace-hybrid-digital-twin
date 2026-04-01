@@ -4,7 +4,6 @@ from pathlib import Path
 
 from newspace_twin.registry.repository import read_registry_snapshot
 
-
 RASTER_MODALITIES = {"sentinel1", "sentinel2", "uav", "vectors"}
 
 
