@@ -15,10 +15,10 @@
 ![CI](https://img.shields.io/github/actions/workflow/status/civiastech/newspace-hybrid-digital-twin/ci.yml?branch=main)
 ![Last Commit](https://img.shields.io/github/last-commit/civiastech/newspace-hybrid-digital-twin)
 ![Stars](https://img.shields.io/github/stars/civiastech/newspace-hybrid-digital-twin?style=social)
-```
 
 
-⚡ Executive Overview
+
+## ⚡ Executive Overview
 
 > A **hybrid digital twin system** that fuses **satellite, UAV, terrain, and sensor data** into a **time-evolving AI-powered risk intelligence engine**.
 
