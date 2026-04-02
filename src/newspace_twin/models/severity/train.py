@@ -7,7 +7,11 @@ import torch
 from sklearn.metrics import confusion_matrix
 from torch import nn
 
-from newspace_twin.datasets.loaders import ClassificationTileDataset, build_dataloader
+from newspace_twin.datasets.loaders import (
+    ClassificationTileDataset,
+    build_dataloader,
+    build_balanced_dataloader,
+)
 from newspace_twin.training.engine import TrainConfig, train_one_epoch
 from newspace_twin.training.metrics import classification_metrics
 from newspace_twin.training.utils import save_checkpoint
@@ -60,7 +64,7 @@ def train_severity_classifier(manifest_csv: str | Path, out_dir: str | Path, cfg
     train_ds = ClassificationTileDataset(manifest_csv, split="train")
     val_ds = ClassificationTileDataset(manifest_csv, split="val")
 
-    train_loader = build_dataloader(train_ds, batch_size=cfg.batch_size, shuffle=True)
+    train_loader = build_balanced_dataloader(train_ds, batch_size=cfg.batch_size)
     val_loader = build_dataloader(val_ds, batch_size=cfg.batch_size, shuffle=False)
 
     x, _ = next(iter(train_loader))

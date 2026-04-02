@@ -7,7 +7,7 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 import torch
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
 
 
 @dataclass(slots=True)
@@ -146,9 +146,45 @@ def classification_collate_fn(batch):
 
     return x_batch, y_batch
 
+def build_balanced_dataloader(
+    dataset: Dataset,
+    batch_size: int = 4,
+) -> DataLoader:
+    if not isinstance(dataset, ClassificationTileDataset):
+        raise TypeError(
+            "build_balanced_dataloader is only supported for ClassificationTileDataset."
+        )
 
-def build_dataloader(dataset: Dataset, batch_size: int = 4, shuffle: bool = False) -> DataLoader:
-    collate = classification_collate_fn if isinstance(dataset, ClassificationTileDataset) else None
+    labels = dataset.df["class_id"].astype(int).to_numpy()
+    class_counts = np.bincount(labels, minlength=4)
+
+    # inverse-frequency sample weights, with small protection
+    class_weights = 1.0 / (class_counts + 1)
+    sample_weights = class_weights[labels]
+
+    sampler = WeightedRandomSampler(
+        weights=torch.as_tensor(sample_weights, dtype=torch.double),
+        num_samples=len(sample_weights),
+        replacement=True,
+    )
+
+    return DataLoader(
+        dataset,
+        batch_size=batch_size,
+        sampler=sampler,
+        collate_fn=classification_collate_fn,
+    )
+
+def build_dataloader(
+    dataset: Dataset,
+    batch_size: int = 4,
+    shuffle: bool = False,
+) -> DataLoader:
+    collate = (
+        classification_collate_fn
+        if isinstance(dataset, ClassificationTileDataset)
+        else None
+    )
 
     return DataLoader(
         dataset,
