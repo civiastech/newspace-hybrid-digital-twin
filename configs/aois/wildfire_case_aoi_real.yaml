@@ -1,0 +1,20 @@
+aoi_id: wildfire_case_aoi
+
+# Path to your AOI geometry
+geometry_file: data/raw/aoi/wildfire_case_aoi.geojson
+
+# Target projection (Portugal)
+target_crs: EPSG:3763
+
+# Time windows (example: adjust later if needed)
+time_windows:
+  pre_start: "2022-06-01"
+  pre_end:   "2022-07-15"
+
+  post_start: "2022-08-01"
+  post_end:   "2022-09-15"
+
+# Filters for Sentinel search
+filters:
+  sentinel2_cloud_cover_lt: 20
+  max_items_per_window: 6

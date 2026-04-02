@@ -72,7 +72,8 @@ def train_severity_classifier(manifest_csv: str | Path, out_dir: str | Path, cfg
     class_counts = train_ds.df["class_id"].value_counts().sort_index()
     num_classes = 4
     counts = np.array([class_counts.get(i, 1) for i in range(num_classes)], dtype=np.float32)
-    weights = 1.0 / counts
+    weights = 1.0 / np.sqrt(counts)
+    weights = weights / weights.sum() * len(weights)
     weights = weights / weights.sum() * num_classes
     class_weights = torch.tensor(weights, dtype=torch.float32).to(cfg.device)
 
