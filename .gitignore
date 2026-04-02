@@ -18,3 +18,4 @@ mlruns/
 .tif
 .npy
 .pt
+data/labels/wildfire_case_aoi/severity_labels.tif
